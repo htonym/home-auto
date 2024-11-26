@@ -9,6 +9,11 @@ import (
 	"github.com/magefile/mage/sh"
 )
 
+const (
+	dbSchemaDir = "./db/schema"
+	dbConn      = "host=localhost dbname=home-auto user=postgres sslmode=disable password=password port=9000"
+)
+
 func Build() error {
 	env := map[string]string{
 		"GOOS":   "linux",
@@ -44,4 +49,19 @@ func Deploy() error {
 	fmt.Println("Restarting remote server...")
 	restartCmd := fmt.Sprintf("ssh %s@%s 'sudo systemctl restart dht-server.service'", user, host)
 	return sh.Run("sh", "-c", restartCmd)
+}
+
+func DbUp() error {
+	cmd := fmt.Sprintf("goose -dir %s postgres %q up", dbSchemaDir, dbConn)
+	return sh.Run("sh", "-c", cmd)
+}
+
+func DbStatus() error {
+	cmd := fmt.Sprintf("goose -dir %s postgres %q status", dbSchemaDir, dbConn)
+	return sh.Run("sh", "-c", cmd)
+}
+
+func DbDown() error {
+	cmd := fmt.Sprintf("goose -dir %s postgres %q down", dbSchemaDir, dbConn)
+	return sh.Run("sh", "-c", cmd)
 }
