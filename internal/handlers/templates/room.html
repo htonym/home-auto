@@ -1,0 +1,17 @@
+{{define "content"}}
+<h1 class="mb-4">Room Conditions</h1>
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+  <div class="col">
+    <div class="card h-100 bg-white">
+      <div class="card-body">
+        <h5 class="card-title">{{.Name}}</h5>
+        <p class="card-text">
+          <strong>Temperature:</strong> {{printf "%.1f" .Temperature}}°F<br />
+          <strong>Humidity:</strong> {{printf "%.1f" .Humidity}}%<br />
+          <strong>Measured at:</strong> {{printf "%s" .TimestampStr}}<br />
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+{{end}}
