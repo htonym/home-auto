@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"home-auto/internal/db"
 	"home-auto/internal/handlers"
+	"log"
 	"net/http"
 )
 
@@ -17,9 +19,16 @@ type RoomConditions struct {
 }
 
 func main() {
+	db.InitDB()
+
+	if db.DB == nil {
+		log.Fatal("DB is nil")
+	}
+
 	router := http.NewServeMux()
 
 	router.HandleFunc("GET /home", handlers.HomePage)
+	router.HandleFunc("POST /measurement", handlers.AddMeasurement)
 
 	server := &http.Server{
 		Addr:    ":" + AppPort,

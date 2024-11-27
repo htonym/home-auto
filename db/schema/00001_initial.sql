@@ -14,6 +14,13 @@ CREATE TABLE IF NOT EXISTS measurements (
     humidity FLOAT,
     timestamp BIGINT
 );
+
+INSERT INTO rooms (name) VALUES ('Master Bedroom');
+INSERT INTO rooms (name) VALUES ('Office');
+INSERT INTO rooms (name) VALUES ('Nursery');
+INSERT INTO rooms (name) VALUES ('Living Room');
+INSERT INTO rooms (name) VALUES ('Playroom');
+INSERT INTO rooms (name) VALUES ('Basement');
 -- +goose StatementEnd
 
 -- +goose Down

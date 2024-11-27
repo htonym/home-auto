@@ -1,0 +1,16 @@
+@hostDomain = http://localhost:8080
+
+GET {{hostDomain}}/ping
+
+
+### Add New Measurement
+POST {{hostDomain}}/measurement
+content-type: application/json
+
+{
+    "roomId": 1, 
+    "timestamp": 1732667723,
+    "temperature": 21.1,
+    "humidity": 50.0
+}
+
