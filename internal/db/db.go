@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	"log"
+	"os"
 
 	_ "github.com/lib/pq"
 )
@@ -11,7 +12,11 @@ import (
 var DB *sql.DB
 
 func InitDB() {
-	host := "localhost"
+	host := os.Getenv("DB_HOST")
+	if host == "" {
+		log.Fatal("DB_HOST environment variable undefined.")
+	}
+
 	port := "9000"
 	user := "postgres"
 	password := "password"

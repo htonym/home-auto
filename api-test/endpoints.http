@@ -1,4 +1,5 @@
-@hostDomain = http://localhost:8080
+# @hostDomain = http://localhost:8080
+@hostDomain = http://rpi4.local:8080
 
 GET {{hostDomain}}/ping
 
@@ -9,7 +10,7 @@ content-type: application/json
 
 {
     "roomId": 1, 
-    "timestamp": 1732667723,
+    "timestamp": 1732667724,
     "temperature": 21.1,
     "humidity": 50.0
 }

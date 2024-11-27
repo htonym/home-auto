@@ -1,11 +1,14 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"home-auto/internal/db"
 	"home-auto/internal/handlers"
 	"log"
 	"net/http"
+
+	"github.com/joho/godotenv"
 )
 
 const AppPort = "8080"
@@ -19,6 +22,11 @@ type RoomConditions struct {
 }
 
 func main() {
+	var envPath string
+	flag.StringVar(&envPath, "env", ".env", "provide path to .env file")
+	flag.Parse()
+
+	initEnv(envPath)
 	db.InitDB()
 
 	if db.DB == nil {
@@ -39,5 +47,12 @@ func main() {
 	err := server.ListenAndServe()
 	if err != nil {
 		fmt.Printf("Error starting server: %s\n", err)
+	}
+}
+
+func initEnv(envPath string) {
+	err := godotenv.Load(envPath)
+	if err != nil {
+		log.Fatalf("Error loading .env file: %s", err)
 	}
 }

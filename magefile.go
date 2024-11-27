@@ -12,9 +12,11 @@ import (
 const (
 	dbSchemaDir = "./db/schema"
 	dbConn      = "host=localhost dbname=home-auto user=postgres sslmode=disable password=password port=9000"
+	dbConnRpi4  = "host=rpi4.local dbname=home-auto user=postgres sslmode=disable password=password port=9000"
 )
 
 func Build() error {
+	mg.Deps(Clean)
 	env := map[string]string{
 		"GOOS":   "linux",
 		"GOARCH": "arm64",
@@ -24,7 +26,15 @@ func Build() error {
 	return sh.RunWith(env, "go", "build", "-o", "bin/server", "./cmd/server/main.go")
 }
 
+func BuildLocal() error {
+	mg.Deps(Clean)
+
+	fmt.Println("Building binary...")
+	return sh.Run("go", "build", "-o", "bin/server", "./cmd/server/main.go")
+}
+
 func Clean() error {
+	fmt.Println("Removing bin/server...")
 	return sh.Rm("bin/server")
 }
 
@@ -51,17 +61,32 @@ func Deploy() error {
 	return sh.Run("sh", "-c", restartCmd)
 }
 
-func DbUp() error {
-	cmd := fmt.Sprintf("goose -dir %s postgres %q up", dbSchemaDir, dbConn)
-	return sh.Run("sh", "-c", cmd)
-}
-
 func DbStatus() error {
 	cmd := fmt.Sprintf("goose -dir %s postgres %q status", dbSchemaDir, dbConn)
 	return sh.Run("sh", "-c", cmd)
 }
 
+func DbUp() error {
+	cmd := fmt.Sprintf("goose -dir %s postgres %q up", dbSchemaDir, dbConn)
+	return sh.Run("sh", "-c", cmd)
+}
+
 func DbDown() error {
 	cmd := fmt.Sprintf("goose -dir %s postgres %q down", dbSchemaDir, dbConn)
+	return sh.Run("sh", "-c", cmd)
+}
+
+func DbStatusRpi4() error {
+	cmd := fmt.Sprintf("goose -dir %s postgres %q status", dbSchemaDir, dbConnRpi4)
+	return sh.Run("sh", "-c", cmd)
+}
+
+func DbUpRpi4() error {
+	cmd := fmt.Sprintf("goose -dir %s postgres %q up", dbSchemaDir, dbConnRpi4)
+	return sh.Run("sh", "-c", cmd)
+}
+
+func DbDownRpi4() error {
+	cmd := fmt.Sprintf("goose -dir %s postgres %q down", dbSchemaDir, dbConnRpi4)
 	return sh.Run("sh", "-c", cmd)
 }
