@@ -42,7 +42,7 @@ func Deploy() error {
 	mg.Deps(Build)
 	user := "tony"
 	host := "rpi4.local"
-	remoteBin := "/home/tony/dev/dht-server/bin/dhtserver"
+	remoteBin := "/home/tony/dev/dht-server/bin/server"
 
 	rmBinCmd := fmt.Sprintf("ssh %s@%s 'rm -f %s'", user, host, remoteBin)
 	fmt.Println("Removing old binary...")
@@ -59,6 +59,47 @@ func Deploy() error {
 	fmt.Println("Restarting remote server...")
 	restartCmd := fmt.Sprintf("ssh %s@%s 'sudo systemctl restart dht-server.service'", user, host)
 	return sh.Run("sh", "-c", restartCmd)
+}
+
+func CleanClient() error {
+	fmt.Println("Removing bin/client...")
+	return sh.Rm("bin/client")
+}
+
+func BuildClient() error {
+	mg.Deps(CleanClient)
+	env := map[string]string{
+		"GOOS":   "linux",
+		"GOARCH": "arm64",
+	}
+
+	fmt.Println("Building client binary...")
+	return sh.RunWith(env, "go", "build", "-o", "bin/client", "./cmd/client/main.go")
+}
+
+func DeployClient() error {
+	mg.Deps(BuildClient)
+	user := "tony"
+	host := "rpi4.local"
+	remoteBin := "/home/tony/dev/dht-server/bin/client"
+
+	fmt.Println("Removing old binary...")
+	rmBinCmd := fmt.Sprintf("ssh %s@%s 'rm -f %s'", user, host, remoteBin)
+	if err := sh.Run("sh", "-c", rmBinCmd); err != nil {
+		return err
+	}
+
+	fmt.Println("Copying new binary to remote location...")
+	copyCmd := fmt.Sprintf("scp bin/client %s@%s:%s", user, host, remoteBin)
+	if err := sh.Run("sh", "-c", copyCmd); err != nil {
+		return err
+	}
+
+	// fmt.Println("Restarting remote server...")
+	// restartCmd := fmt.Sprintf("ssh %s@%s 'sudo systemctl restart dht-server.service'", user, host)
+	// return sh.Run("sh", "-c", restartCmd)
+
+	return nil
 }
 
 func DbStatus() error {
