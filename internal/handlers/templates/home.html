@@ -13,23 +13,22 @@
 
   <body>
     <div class="container mt-4">
-      {{ $firstMeasurement := index . 0 }}
-      <h2>{{ $firstMeasurement.RoomName }}</h2>
+      <h2>{{ .LastMeasurement.RoomName }}</h2>
       <div class="container mt-3">
         <div class="row">
           <div class="col-md-5">
             <ul class="list-group">
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <span class="fw-bold">Current Temperature:</span>
-                <span>{{printf "%.1f" $firstMeasurement.TemperatureF}}°F</span>
+                <span>{{printf "%.1f" .LastMeasurement.TemperatureF}}°F</span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <span class="fw-bold">Current Humidity:</span>
-                <span>{{printf "%.1f" $firstMeasurement.Humidity}}%</span>
+                <span>{{printf "%.1f" .LastMeasurement.Humidity}}%</span>
               </li>
               <li class="list-group-item d-flex justify-content-between align-items-center">
                 <span class="fw-bold">Last Measurement:</span>
-                <span>{{ $firstMeasurement.TimestampStr }}</span>
+                <span>{{ .LastMeasurement.TimestampStr }}</span>
               </li>
             </ul>
           </div>
@@ -46,7 +45,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
     <script>
     const dataTemperature = [
-        {{range .}}
+        {{range .Measurements}}
         {x: "{{.TimestampStr}}", y: {{.TemperatureF}}},
         {{end}}
     ];
@@ -95,7 +94,7 @@
     });
 
     const dataHumidity = [
-        {{range .}}
+        {{range .Measurements}}
         {x: "{{.TimestampStr}}", y: {{.Humidity}}},
         {{end}}
     ];

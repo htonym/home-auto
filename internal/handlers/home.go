@@ -11,6 +11,11 @@ import (
 //go:embed templates/*
 var tplFolder embed.FS
 
+type HomeData struct {
+	Measurements    []models.Measurement
+	LastMeasurement models.Measurement
+}
+
 func HomePage(w http.ResponseWriter, r *http.Request) {
 	tmpl, err := template.ParseFS(tplFolder, "templates/home.html")
 	if err != nil {
@@ -18,13 +23,17 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	measurements, err := models.GetAllMeasurements()
+	var data HomeData
+
+	data.Measurements, err = models.GetMeasurements(24 * 60 * 60)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	err = tmpl.Execute(w, measurements)
+	data.LastMeasurement = data.Measurements[len(data.Measurements)-1]
+
+	err = tmpl.Execute(w, data)
 	if err != nil {
 		log.Printf("writing template: %v", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
