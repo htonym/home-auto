@@ -44,9 +44,7 @@ func GetAllMeasurements() ([]Measurement, error) {
 			return nil, err
 		}
 
-		t := time.Unix(measurement.Timestamp, 0)
-		measurement.TimestampStr = t.Format("2006-01-02 3:04 PM")
-
+		measurement.TimestampStr = time.Unix(measurement.Timestamp, 0).Format(time.RFC3339)
 		measurement.TemperatureF = (measurement.TemperatureC * 9 / 5) + 32
 
 		measurements = append(measurements, measurement)
