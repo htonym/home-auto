@@ -36,6 +36,7 @@ func main() {
 	router := http.NewServeMux()
 
 	router.HandleFunc("GET /home", handlers.HomePage)
+	router.HandleFunc("GET /history", handlers.HistoryPage)
 	router.HandleFunc("POST /measurement", handlers.AddMeasurement)
 
 	server := &http.Server{
