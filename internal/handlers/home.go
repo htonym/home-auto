@@ -11,6 +11,8 @@ import (
 //go:embed templates/*
 var tplFolder embed.FS
 
+const measurementSpan = 48 * 60 * 60
+
 type HomeData struct {
 	Measurements    []models.Measurement
 	LastMeasurement models.Measurement
@@ -25,7 +27,7 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 
 	var data HomeData
 
-	data.Measurements, err = models.GetMeasurements(24 * 60 * 60)
+	data.Measurements, err = models.GetMeasurements(measurementSpan)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
