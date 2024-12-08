@@ -16,6 +16,6 @@ content-type: application/json
 }
 
 ### Get all rooms
-GET {{hostDomain}}/rooms
+GET {{hostDomain}}/api/rooms
 content-type: application/json
 

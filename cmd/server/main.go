@@ -36,15 +36,19 @@ func main() {
 	router := http.NewServeMux()
 
 	router.HandleFunc("GET /home", handlers.HomePage)
+	router.HandleFunc("GET /", handlers.HomePage)
+	router.HandleFunc("GET /room/{id}", handlers.ViewRoom)
+
 	router.HandleFunc("POST /measurement", handlers.AddMeasurement)
-	router.HandleFunc("GET /rooms", handlers.GetAllRooms)
+	router.HandleFunc("POST /api/measurement", handlers.AddMeasurement)
+	router.HandleFunc("GET /api/rooms", handlers.GetAllRooms)
 
 	server := &http.Server{
 		Addr:    ":" + AppPort,
 		Handler: router,
 	}
 
-	fmt.Printf("Server is running on http://rpi4.local:%s\n", AppPort)
+	fmt.Printf("Server is running on port: %s\n", AppPort)
 	err := server.ListenAndServe()
 	if err != nil {
 		fmt.Printf("Error starting server: %s\n", err)

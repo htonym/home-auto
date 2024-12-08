@@ -14,12 +14,11 @@ var tplFolder embed.FS
 const measurementSpan = 48 * 60 * 60
 
 type HomeData struct {
-	Measurements    []models.Measurement
-	LastMeasurement models.Measurement
+	Rooms []models.Room
 }
 
 func HomePage(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFS(tplFolder, "templates/home.html")
+	tmpl, err := template.ParseFS(tplFolder, "templates/room-list.html")
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
@@ -27,15 +26,11 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 
 	var data HomeData
 
-	var roomId int64 = 1 // Hardcoded to master bedroom
-
-	data.Measurements, err = models.GetMeasurements(measurementSpan, roomId)
+	data.Rooms, err = models.GetAllRooms()
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-
-	data.LastMeasurement = data.Measurements[len(data.Measurements)-1]
 
 	err = tmpl.Execute(w, data)
 	if err != nil {
