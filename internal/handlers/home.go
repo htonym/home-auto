@@ -27,7 +27,9 @@ func HomePage(w http.ResponseWriter, r *http.Request) {
 
 	var data HomeData
 
-	data.Measurements, err = models.GetMeasurements(measurementSpan)
+	var roomId int64 = 1 // Hardcoded to master bedroom
+
+	data.Measurements, err = models.GetMeasurements(measurementSpan, roomId)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return

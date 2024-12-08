@@ -17,16 +17,16 @@ type Measurement struct {
 }
 
 // Get all measurements over the lastSeconds provided
-func GetMeasurements(lastSeconds int64) ([]Measurement, error) {
+func GetMeasurements(lastSeconds, roomID int64) ([]Measurement, error) {
 	query := `
 	SELECT measurements.*, rooms.name as room_name
 	FROM measurements
 	LEFT JOIN rooms ON measurements.room_id = rooms.id
-	WHERE measurements.timestamp > $1
+	WHERE measurements.timestamp > $1 AND measurements.room_id = $2
 	ORDER by measurements.timestamp;
 	`
 	includeAllAfter := time.Now().Unix() - lastSeconds
-	rows, err := db.DB.Query(query, includeAllAfter)
+	rows, err := db.DB.Query(query, includeAllAfter, roomID)
 	if err != nil {
 		return nil, err
 	}
