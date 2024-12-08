@@ -102,6 +102,43 @@ func DeployClient() error {
 	return nil
 }
 
+func BuildClientRpi2() error {
+	mg.Deps(CleanClient)
+	env := map[string]string{
+		"GOOS":   "linux",
+		"GOARCH": "arm",
+		"GOARM":  "7",
+	}
+
+	fmt.Println("Building client binary...")
+	return sh.RunWith(env, "go", "build", "-o", "bin/client", "./cmd/client/main.go")
+}
+
+func DeployClientRpi2() error {
+	mg.Deps(BuildClientRpi2)
+	user := "tony"
+	host := "rpi2.local"
+	remoteBin := "/home/tony/home-auto-client/client"
+
+	fmt.Println("Removing old binary...")
+	rmBinCmd := fmt.Sprintf("ssh %s@%s 'rm -f %s'", user, host, remoteBin)
+	if err := sh.Run("sh", "-c", rmBinCmd); err != nil {
+		return err
+	}
+
+	fmt.Println("Copying new binary to remote location...")
+	copyCmd := fmt.Sprintf("scp bin/client %s@%s:%s", user, host, remoteBin)
+	if err := sh.Run("sh", "-c", copyCmd); err != nil {
+		return err
+	}
+
+	fmt.Println("Restarting remote client...")
+	restartCmd := fmt.Sprintf("ssh %s@%s 'sudo systemctl restart dht-client.service'", user, host)
+	return sh.Run("sh", "-c", restartCmd)
+
+	return nil
+}
+
 func DbStatus() error {
 	cmd := fmt.Sprintf("goose -dir %s postgres %q status", dbSchemaDir, dbConn)
 	return sh.Run("sh", "-c", cmd)

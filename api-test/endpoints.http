@@ -15,3 +15,7 @@ content-type: application/json
     "humidity": 50.0
 }
 
+### Get all rooms
+GET {{hostDomain}}/rooms
+content-type: application/json
+

@@ -37,6 +37,7 @@ func main() {
 
 	router.HandleFunc("GET /home", handlers.HomePage)
 	router.HandleFunc("POST /measurement", handlers.AddMeasurement)
+	router.HandleFunc("GET /rooms", handlers.GetAllRooms)
 
 	server := &http.Server{
 		Addr:    ":" + AppPort,

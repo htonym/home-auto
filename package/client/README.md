@@ -1,7 +1,3 @@
-# Home Automation Project
-
-## Client
-
 ## Checklist
 
 - [ ] Enable I2C on the raspberry pi
@@ -10,8 +6,6 @@
 ### systemd Service
 
 File name: /etc/systemd/system/dht-client.service
-
-Use the IP address is sending from raspberry pi.
 
 ```sh
 [Unit]
