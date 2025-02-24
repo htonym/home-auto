@@ -4,8 +4,6 @@ Implementation to create client and server binaries to run on raspberry pi and r
 
 ![](example-reading.png)
 
-The "SHTC3 high-Precision Digital Temperature and Humidity Sensor" is used for temperature readings. This can be purchased from [Amazon](https://a.co/d/fzAEyVL)
-
 ## SHTC3 High-Precision Digital Temperature and Humidity Sensor
 
 The SHTC3 is a compact, low-power sensor for precise temperature and humidity readings. It supports I2C communication and operates within a voltage range of 1.62V to 3.6V.
@@ -19,13 +17,6 @@ Accuracy: ±0.2°C (temperature), ±2% RH (humidity)
 
 Purchase:
 Available on [Amazon](https://a.co/d/fzAEyVL) and other online retailers.
-
-## Client
-
-## Checklist
-
-- [ ] Enable I2C on the raspberry pi
-- [ ] Add the systemd service
 
 ### systemd Service
 
