@@ -21,7 +21,7 @@ After=network.target
 [Service]
 Type=simple
 User=tony
-ExecStart=/home/tony/home-auto-client/client  --room-id=4 --interval=300 --host="http://192.168.4.181:8080"
+ExecStart=/home/tony/home-auto-client/client  --room-id=4 --interval=300 --host="<IP address:port number>"
 Restart=on-failure
 
 [Install]
