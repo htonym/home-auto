@@ -1,5 +1,25 @@
 # Home Automation Project
 
+Implementation to create client and server binaries to run on raspberry pi and read climate sensors. Also the climate is displayed on server web page. Example snapshot:
+
+![](example-reading.png)
+
+The "SHTC3 high-Precision Digital Temperature and Humidity Sensor" is used for temperature readings. This can be purchased from [Amazon](https://a.co/d/fzAEyVL)
+
+## SHTC3 High-Precision Digital Temperature and Humidity Sensor
+
+The SHTC3 is a compact, low-power sensor for precise temperature and humidity readings. It supports I2C communication and operates within a voltage range of 1.62V to 3.6V.
+
+Key Features:
+Temperature Range: -40°C to 125°C
+
+Humidity Range: 0% to 100% RH
+
+Accuracy: ±0.2°C (temperature), ±2% RH (humidity)
+
+Purchase:
+Available on [Amazon](https://a.co/d/fzAEyVL) and other online retailers.
+
 ## Client
 
 ## Checklist
