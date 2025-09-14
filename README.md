@@ -48,4 +48,7 @@ sudo systemctl daemon-reload
 sudo systemctl enable dht-client.service
 sudo systemctl start dht-client.service
 sudo systemctl status dht-client.service
+
+sudo systemctl start dht-server.service
+sudo systemctl status dht-server.service
 ```
